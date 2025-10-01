@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Philippines Earthquake Alert — Advanced</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header class="app-header">
+    <h1>🇵🇭 Philippines Earthquake Alert</h1>
+    <p class="subtitle">Live, real-time data — powered by USGS API </p>
+  </header>
+
+  <main class="app">
+    <!-- Left Sidebar -->
+    <aside class="sidebar">
+      <!-- Latest Major Highlight -->
+      <div id="majorHighlight" class="major-highlight">
+        <div class="mh-title">Latest Major Earthquake Philippines</div>
+        <div id="mhContent" class="mh-content">
+          <div class="mh-empty">Checking for major quakes (M≥5)…</div>
+        </div>
+        <div id="mhUpdated" class="mh-updated"></div>
+      </div>
+
+      <!-- Auto Refresh timer UI -->
+      <div class="auto-refresh">
+        <label for="refreshSeconds">Auto Refresh (seconds)</label>
+        <div class="refresh-row">
+          <input id="refreshSeconds" type="number" min="5" step="5" value="30" />
+          <button id="toggleAuto">Stop</button>
+        </div>
+        <div class="countdown">Next refresh in <span id="countdown">—</span>s</div>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls">
+        <label for="timeRange">Time range:</label>
+        <select id="timeRange">
+          <option value="1">Past 1 day</option>
+          <option value="7" selected>Past 7 days</option>
+          <option value="30">Past 30 days</option>
+        </select>
+        <button id="refreshBtn">Refresh</button>
+      </div>
+
+      <div id="lastUpdated" class="last-updated">—</div>
+
+      <!-- Earthquake list -->
+      <div id="quakeList" class="quake-list"></div>
+    </aside>
+
+    <!-- Map Section -->
+    <section class="map-container">
+      <div id="map"></div>
+    </section>
+
+    <!-- Right Stats Panel -->
+    <aside class="stats-panel">
+      <div class="stats-title">📊 Statistics</div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Past 24h — Count</div>
+          <div id="statDailyCount" class="stat-value">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Past 7d — Count</div>
+          <div id="statWeeklyCount" class="stat-value">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Largest (24h)</div>
+          <div id="statLargest24h" class="stat-value">—</div>
+        </div>
+      </div>
+
+      <div class="chart-wrapper">
+        <canvas id="weekChart" width="300" height="200"></canvas>
+      </div>
+
+      <div class="stats-note">Data source: USGS GeoJSON feeds — counts are limited to the Philippines bounding box.</div>
+
+<!-- 🌦 Weather Update Panel -->
+<div class="weather-panel">
+  <div class="weather-title">Weather Update</div>
+  <div class="weather-body">
+    <p id="weather-status">Loading weather...</p>
+    <p><strong>Temperature:</strong> <span id="weather-temp"></span> °C</p>
+    <p><strong>Condition:</strong> <span id="weather-condition"></span></p>
+  </div>
+</div>
+
+<script>
+async function fetchWeather() {
+  try {
+    // Example: Manila coordinates
+    const lat = 14.5995;
+    const lon = 120.9842;
+
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (data && data.current_weather) {
+      document.getElementById("weather-status").textContent = "✅ Weather Loaded";
+      document.getElementById("weather-temp").textContent = data.current_weather.temperature;
+      document.getElementById("weather-condition").textContent = data.current_weather.weathercode;
+    } else {
+      document.getElementById("weather-status").textContent = "⚠️ No weather data available";
+    }
+  } catch (error) {
+    console.error("Weather API Error:", error);
+    document.getElementById("weather-status").textContent = "❌ Failed to load weather";
+  }
+}
+
+// Fetch on page load
+fetchWeather();
+</script>
+
+
+
+  <div id="toastContainer" class="toast-container"></div>
+
+  <footer class="footer">
+    <small>Data source: USGS GeoJSON feeds. For official reports</small>
+  </footer>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

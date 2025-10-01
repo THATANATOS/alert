@@ -1,0 +1,290 @@
+:root {
+  --bg: #0a0a0a;
+  --card: #141414;
+  --muted: #9aa0a6;
+  --accent: #7c4dff;
+  --danger: #ff5c5c;
+  --warn: #ffb86b;
+  --ok: #64ffda;
+  --glass: rgba(255,255,255,0.03);
+}
+
+* { box-sizing: border-box; font-family: "Inter", sans-serif; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: #f2f2f2;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  padding: 16px;
+  text-align: center;
+  background: #111;
+  border-bottom: 1px solid #222;
+}
+.app-header h1 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+.subtitle {
+  margin-top: 4px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.app {
+  display: flex;
+  flex: 1;
+}
+
+/* Sidebar (unchanged width, added spacing for new elements) */
+.sidebar {
+  width: 340px; /* slightly wider to accommodate stats */
+  background: var(--card);
+  border-right: 1px solid #222;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: hidden;
+}
+
+/* Major highlight card */
+.major-highlight {
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.015));
+  border: 1px solid rgba(255,255,255,0.03);
+  padding: 10px;
+  border-radius: 10px;
+}
+.mh-title {
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.mh-content { font-size: 0.95rem; color: #e9eef8; }
+.mh-content .mh-empty { color: var(--muted); }
+.mh-updated { font-size: 0.8rem; color: var(--muted); margin-top:6px; }
+
+/* Auto-refresh control */
+.auto-refresh {
+  background: var(--glass);
+  border-radius: 8px;
+  padding: 8px;
+  border: 1px solid rgba(255,255,255,0.02);
+}
+.auto-refresh label { font-size: 0.85rem; color: var(--muted); display:block; margin-bottom:6px; }
+.refresh-row { display:flex; gap:8px; align-items:center; }
+.refresh-row input {
+  width: 100%;
+  padding: 6px 8px;
+  background: #0e0e0f;
+  border: 1px solid #222;
+  color: #fff;
+  border-radius: 6px;
+}
+.refresh-row button {
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: var(--accent);
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+.countdown { font-size:0.85rem; color:var(--muted); margin-top:6px; }
+
+/* Controls (existing) */
+.controls {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.controls label{ color:var(--muted); font-size:0.9rem; }
+.controls select, .controls button {
+  flex: 1;
+  background: #111;
+  border: 1px solid #333;
+  color: #fff;
+  padding: 6px;
+  border-radius: 6px;
+}
+.controls button { cursor: pointer; }
+
+/* Last updated */
+.last-updated {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin: 6px 0;
+}
+
+/* Earthquake list */
+.quake-list {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+.quake {
+  background: #1a1a1a;
+  border: 1px solid #222;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
+  transition: transform 0.12s ease;
+}
+.quake:hover { transform: translateY(-4px); cursor: pointer; }
+.quake .mag {
+  font-weight: bold;
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+.mag.low { background: rgba(100,255,218,0.1); color: var(--ok); }
+.mag.mid { background: rgba(255,184,107,0.1); color: var(--warn); }
+.mag.high { background: rgba(255,92,92,0.1); color: var(--danger); }
+.quake .place { margin-top: 6px; font-size: 0.9rem; }
+.quake .time { font-size: 0.8rem; color: var(--muted); }
+
+/* Stats panel */
+.stats-panel {
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.015));
+  border: 1px solid rgba(255,255,255,0.03);
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 6px;
+}
+.stats-title { font-weight:700; color:var(--accent); margin-bottom:8px; }
+.stats-grid { display:flex; gap:8px; margin-bottom:10px; }
+.stat-card { flex:1; background:#0e0e0f;padding:8px;border-radius:8px;border:1px solid #222; }
+.stat-label { color:var(--muted); font-size:0.82rem; }
+.stat-value { font-size:1.2rem; font-weight:700; margin-top:6px; }
+
+.chart-wrapper { margin-top:8px; }
+
+/* Map container */
+.map-container { flex: 1; }
+#map { height: 100%; width: 100%; }
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 10px;
+  background: #111;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* Toast Notification */
+.toast-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 2000;
+}
+.toast {
+  background: #222;
+  color: #fff;
+  padding: 10px 14px;
+  margin-top: 10px;
+  border-left: 5px solid var(--accent);
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+  animation: fadeIn 0.5s ease, fadeOut 0.5s ease 4.5s forwards;
+}
+.toast strong { color: var(--accent); }
+@keyframes fadeIn { from {opacity:0; transform: translateY(10px);} to {opacity:1; transform: translateY(0);} }
+@keyframes fadeOut { to {opacity:0; transform: translateY(10px);} }
+
+
+/* ================================
+   PHIVOLCS Earthquake Panel
+   ================================ */
+.phivolcs-panel {
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.015));
+  border: 1px solid rgba(255,255,255,0.03);
+  padding: 12px;
+  border-radius: 10px;
+  margin-top: 12px;
+}
+
+.phivolcs-title {
+  font-weight: 700;
+  color: var(--accent);
+  font-size: 1rem;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+/* Table-style layout */
+.phivolcs-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.phivolcs-table thead {
+  background: #111;
+}
+
+.phivolcs-table th, 
+.phivolcs-table td {
+  padding: 8px 6px;
+  text-align: left;
+  border-bottom: 1px solid #222;
+}
+
+.phivolcs-table th {
+  color: var(--muted);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.phivolcs-table td {
+  color: #f2f2f2;
+}
+
+.phivolcs-table .mag {
+  font-weight: bold;
+  display: inline-block;
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+.phivolcs-table .mag.low { background: rgba(100,255,218,0.1); color: var(--ok); }
+.phivolcs-table .mag.mid { background: rgba(255,184,107,0.1); color: var(--warn); }
+.phivolcs-table .mag.high { background: rgba(255,92,92,0.1); color: var(--danger); }
+
+/* Scrollable content */
+.phivolcs-body {
+  max-height: 300px;
+  overflow-y: auto;
+}
+.stats-panel {
+  background: #111;
+  color: #eee;
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 20px;
+}
+
+.stats-title {
+  font-size: 1.3em;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.chart-container {
+  margin: 20px 0;
+}
+
+.quake-summary {
+  margin-top: 15px;
+  padding: 10px;
+  background: #222;
+  border-radius: 6px;
+  font-size: 0.95em;
+}
